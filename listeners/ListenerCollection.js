@@ -20,8 +20,17 @@ module.exports = async (collection) => {
       fromBlock: 'latest'
     })
 
+    listener.on('connected', () => {
+      console.log("Setup listener for", collection.name)
+    })
+
+    listener.on('error', (error) => {
+      console.error({ code: error.code, reason: error.reason })
+    })
+
     listener.on('data', (data) => {
       if (data.event === 'Transfer') { // ERC721
+        console.log("New transfer event for ERC721 token:", data.returnValues.tokenId)
         delete data.signature
         addTransfer({
           ...data,
@@ -63,8 +72,6 @@ module.exports = async (collection) => {
         })
       }
     })
-
-    console.log("Setup listener for", collection.name)
   } catch (error) {
     console.error(error)
   }

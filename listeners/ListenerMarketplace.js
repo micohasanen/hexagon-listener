@@ -12,6 +12,14 @@ module.exports = () => {
     fromBlock: 'latest'
   })
 
+  listener.on('connected', () => {
+    console.log("Setup Marketplace Listener on", chain)
+  })
+
+  listener.on('error', (error) => {
+    console.log({ code: error.code, reason: error.reason })
+  })
+
   listener.on('data', (data) => {
     console.log("Marketplace Event:", data.event)
 
@@ -60,6 +68,4 @@ module.exports = () => {
         })
     }
   })
-
-  console.log("Setup Marketplace Listener for", chain)
 }
