@@ -1,0 +1,20 @@
+{
+  "name": "hexagon-listener",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "bullmq": "^1.76.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "nanoid": "^3.3.1",
+    "web3": "^1.7.1"
+  }
+}
