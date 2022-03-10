@@ -1,6 +1,7 @@
 const Web3 = require("web3")
 const config = {
   keepAlive: true,
+  keepAliveInterval: -1,
   timeout: 20000,
   clientConfig:{
     maxReceivedFrameSize: 10000000000,
@@ -9,8 +10,8 @@ const config = {
   reconnect: {
     auto: true,
     delay: 5000,
-    maxAttempts: 20,
-    onTimeout: false
+    maxAttempts: 50,
+    onTimeout: true
   }
 }
 
