@@ -1,23 +1,9 @@
 const Web3 = require("web3")
-const config = {
-  keepAlive: true,
-  keepAliveInterval: -1,
-  timeout: 20000,
-  clientConfig:{
-    maxReceivedFrameSize: 10000000000,
-    maxReceivedMessageSize: 10000000000,
-  },
-  reconnect: {
-    auto: true,
-    delay: 5000,
-    maxAttempts: 50,
-    onTimeout: true
-  }
-}
+const config = require("../config")
 
-const MumbaiProvider = new Web3(new Web3.providers.WebsocketProvider(process.env.RPC_MUMBAI, config))
-const PolygonProvider = new Web3(new Web3.providers.WebsocketProvider(process.env.RPC_POLYGON, config))
-const ETHProvider = new Web3(new Web3.providers.WebsocketProvider(process.env.RPC_ETH, config))
+const MumbaiProvider = new Web3.providers.WebsocketProvider(process.env.RPC_MUMBAI, config.socketConnection)
+const PolygonProvider = new Web3.providers.WebsocketProvider(process.env.RPC_POLYGON, config.socketConnection)
+const ETHProvider = new Web3.providers.WebsocketProvider(process.env.RPC_ETH, config.socketConnection)
 
 function getProvider (chain) {
   switch (chain) {
@@ -31,6 +17,16 @@ function getProvider (chain) {
 }
 
 module.exports = (chain) => { 
-  const Provider = getProvider(chain)
-  return Provider
+  let Provider = getProvider(chain)
+  const web3 = new Web3(Provider)
+
+  Provider.on('error', (error) => {
+    console.error("Provider Error", error)
+  })
+
+  Provider.on('end', (error) => {
+    console.error("Provider End", error)
+  })
+
+  return web3
 }

@@ -42,6 +42,7 @@ module.exports = async (collection) => {
           contractType
         })
       } else if (data.event === 'TransferSingle') { // ERC1155
+        console.log("TransferSingle event for ERC1155 token:", data.returnValues.id)
         delete data.signature
         addTransfer({
           ...data,
@@ -54,6 +55,7 @@ module.exports = async (collection) => {
           contractType
         })
       } else if (data.event === 'TransferBatch') { // ERC1155
+        console.log("TransferBatch event for ERC1155 tokens:", data.returnValues.ids)
         delete data.signature
         const baseData = {
           ...data,
