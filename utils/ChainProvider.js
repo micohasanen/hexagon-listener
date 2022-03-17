@@ -33,8 +33,12 @@ module.exports = (chain) => {
   })
 
   setInterval(() => {
-    Provider.send('ping')
-  }, 15000)
+    try {
+      Provider.send('ping')
+    } catch (err) {
+      console.log(err)
+    }
+  }, 60000)
 
   return web3
 }
