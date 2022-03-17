@@ -16,7 +16,7 @@ module.exports = {
     reconnect: {
       auto: true,
       delay: 5000,
-      maxAttempts: 500,
+      maxAttempts: Infinity,
       onTimeout: true
     }
   }

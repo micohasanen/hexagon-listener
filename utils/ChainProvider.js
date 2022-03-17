@@ -22,11 +22,19 @@ module.exports = (chain) => {
 
   Provider.on('error', (error) => {
     console.error("Provider Error", error)
+    Provider = getProvider(chain)
+    web3.setProvider(Provider)
   })
 
   Provider.on('end', (error) => {
     console.error("Provider End", error)
+    Provider = getProvider(chain)
+    web3.setProvider(Provider)
   })
+
+  setInterval(() => {
+    Provider.send('ping')
+  }, 15000)
 
   return web3
 }
