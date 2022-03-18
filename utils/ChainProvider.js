@@ -32,5 +32,12 @@ module.exports = (chain) => {
     web3.setProvider(Provider)
   })
 
+  setInterval(() => {
+    const connected = Provider.connected
+    if (!connected) {
+      console.log('Provider not connected')
+    }
+  }, 5000)
+
   return web3
 }
