@@ -9,8 +9,8 @@ module.exports = {
   socketConnection: {
     timeout: 20000,
     clientConfig:{
-      keepAlive: true,
-      keepAliveInterval: 60000,
+      keepalive: true,
+      keepaliveInterval: 60000,
       maxReceivedFrameSize: 10000000000,
       maxReceivedMessageSize: 10000000000,
     },
