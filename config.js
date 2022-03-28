@@ -6,6 +6,13 @@ module.exports = {
     connectTimeout: 10000,
     lazyConnect: true
   },
+  rpcConnection: {
+    keepAlive: true,
+    timeout: 20000
+  },
+  listener: {
+    interval: 10000
+  },
   socketConnection: {
     timeout: 20000,
     clientConfig:{

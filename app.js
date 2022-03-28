@@ -7,13 +7,13 @@ const app = express()
 
 app.listen(PORT, () => {
   // Setup Marketplace Listener
-  require("./listeners/ListenerMarketplace")()
+  require("./listeners/ListenerMarketplaceHttp")()
 
   // Setup Listeners for whitelisted collections
   axios.get(`${process.env.API_URL}/collections/all/whitelisted`).then((res) => {
     if (res.data?.length) {
       res.data.forEach((collection) => {
-        require("./listeners/ListenerCollection")(collection)
+        require("./listeners/ListenerCollectionHttp")(collection)
       })
     }
   })
