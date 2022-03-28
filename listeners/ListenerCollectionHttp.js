@@ -4,7 +4,7 @@ const GetProvider = require("../utils/ChainProvider")
 const { addTransfer } = require("../queue/Queue")
 const config = require("../config")
 
-function logEvents (events, chain) {
+function logEvents (events, chain, contractType) {
   events.forEach((data) => {
     if (data.event === 'Transfer') { // ERC721
       console.log("New transfer event for ERC721 token:", data.returnValues.tokenId)
@@ -75,7 +75,7 @@ module.exports = async (collection) => {
           toBlock: currentBlock.number
         })
 
-        if (events?.length) logEvents(events, collection.chain)
+        if (events?.length) logEvents(events, collection.chain, contractType)
 
         startBlock = currentBlock.number + 1
       }
