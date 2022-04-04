@@ -5,9 +5,13 @@ const express = require("express")
 const axios = require("axios")
 const app = express()
 
+const config = require("./config")
+
 app.listen(PORT, () => {
   // Setup Marketplace Listener
-  require("./listeners/ListenerMarketplaceHttp")()
+  config.marketplaces.forEach((marketplace) => {
+    require("./listeners/ListenerMarketplaceHttp")(marketplace)
+  })
 
   // Setup Listeners for whitelisted collections
   axios.get(`${process.env.API_URL}/collections/all/whitelisted`).then((res) => {

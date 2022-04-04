@@ -54,14 +54,13 @@ function logEvents(events) {
   })
 }
 
-module.exports = async () => {
+module.exports = async ({ chain, address }) => {
   try {
-    const chain = process.env.MARKETPLACE_CHAIN
-    const address = process.env.MARKETPLACE_ADDRESS
     const Provider = GetProvider(chain)
     const contract = new Provider.eth.Contract(ABI_Marketplace, address)
 
     let startBlock = await Provider.eth.getBlockNumber()
+    console.log(chain, 'marketplace listener setup')
 
     setInterval(async () => {
       const currentBlock = await Provider.eth.getBlock('latest')
