@@ -29,7 +29,7 @@ module.exports = {
     }
   },
   marketplaces: [
-    { chain: 'mumbai', address: '0xfDBdE84e30e4b8eCf063b98B041925c64B78c798' },
-    { chain: 'polygon', address: '0xcd3b66f97B5461318FeDC291c0DBBb2e6590F029' }
+    { chain: 'mumbai', address: process.env.MARKETPLACE_MUMBAI },
+    { chain: 'polygon', address: process.env.MARKETPLACE_POLYGON }
   ]
 }
