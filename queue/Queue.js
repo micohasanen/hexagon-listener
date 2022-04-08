@@ -1,15 +1,16 @@
 const config = require('../config')
-const { Queue } = require("bullmq")
+const { Queue, QueueScheduler } = require("bullmq")
 const { nanoid } = require("nanoid")
 
 // Queues
 const transferQueue = new Queue('transfers', { connection: config.redisConnection })
+new QueueScheduler('transfers')
 const listingQueue = new Queue('listings', { connection: config.redisConnection })
 const bidQueue = new Queue('bids', { connection: config.redisConnection })
 const auctionQueue = new Queue('auctions', { connection: config.redisConnection })
 
 exports.addTransfer = async (data) => {
-  await transferQueue.add(nanoid(), data)
+  await transferQueue.add(nanoid(), data, { delay: 30000 })
 }
 
 exports.addToListingQueue = async (data) => {
