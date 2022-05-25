@@ -64,7 +64,7 @@ module.exports = async ({ chain, address }) => {
 
     setInterval(async () => {
       const currentBlock = await Provider.eth.getBlock('latest')
-      if (currentBlock.number > startBlock) {
+      if (currentBlock?.number > startBlock) {
         const events = await contract.getPastEvents('allEvents', {
           fromBlock: startBlock,
           toBlock: currentBlock.number

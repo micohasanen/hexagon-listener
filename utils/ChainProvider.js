@@ -4,6 +4,8 @@ const config = require("../config")
 const MumbaiProvider = new Web3.providers.HttpProvider(process.env.RPC_MUMBAI, config.rpcConnection)
 const PolygonProvider = new Web3.providers.HttpProvider(process.env.RPC_POLYGON, config.rpcConnection)
 const ETHProvider = new Web3.providers.HttpProvider(process.env.RPC_ETH, config.rpcConnection)
+const AVAXProvider = new Web3.providers.HttpProvider(process.env.RPC_AVAX, config.rpcConnection)
+const BSCProvider = new Web3.providers.HttpProvider(process.env.RPC_BSC, config.rpcConnection)
 
 function getProvider (chain) {
   switch (chain) {
@@ -13,6 +15,10 @@ function getProvider (chain) {
       return PolygonProvider
     case 'eth':
       return ETHProvider
+    case 'avalanche':
+      return AVAXProvider
+    case 'bsc':
+      return BSCProvider
   }
 }
 

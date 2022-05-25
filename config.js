@@ -32,6 +32,9 @@ module.exports = {
   },
   marketplaces: [
     { chain: 'mumbai', address: process.env.MARKETPLACE_MUMBAI },
-    { chain: 'polygon', address: process.env.MARKETPLACE_POLYGON }
+    { chain: 'polygon', address: process.env.MARKETPLACE_POLYGON },
+    { chain: 'avalanche', address: process.env.MARKETPLACE_AVAX },
+    { chain: 'bsc', address: process.env.MARKETPLACE_BSC },
+    { chain: 'eth', address: process.env.MARKETPLACE_ETH }
   ]
 }
