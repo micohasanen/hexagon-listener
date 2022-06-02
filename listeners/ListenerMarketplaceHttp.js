@@ -65,12 +65,13 @@ module.exports = async ({ chain, address }) => {
     let startBlock;
 
     const listenerStatus = await ListenerStatus.findOne({ 
-      chain :collection.chain,
+      chain :chain,
       id: "marketplace:"+address
     })
     if (!listenerStatus) {
        startBlock = await Provider.eth.getBlockNumber()
-       listenerStatus.chain =  collection.chain
+       const listenerStatus = new ListenerStatus() 
+       listenerStatus.chain =  chain
        listenerStatus.blockNumber = startBlock
        listenerStatus.id = "marketplace:"+address
        await listenerStatus.save()
@@ -90,9 +91,12 @@ module.exports = async ({ chain, address }) => {
         })
 
         if (events?.length) logEvents(events)
+        
 
-        listenerStatus.blockNumber = currentBlock.number + 1
-        await listenerStatus.save()
+        await ListenerStatus.updateOne({
+          chain: chain,
+          id: "marketplace:"+address
+        }, { blockNumber: currentBlock.number + 1 }, { upsert: true })
 
       }
     }, config.listener.interval)

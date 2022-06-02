@@ -77,6 +77,7 @@ module.exports = async (collection) => {
     })
     if (!listenerStatus) {
        startBlock = await Provider.eth.getBlockNumber()
+       const listenerStatus = new ListenerStatus() 
        listenerStatus.chain =  collection.chain
        listenerStatus.blockNumber = startBlock
        listenerStatus.id = "collection:"+collection.address
@@ -97,8 +98,12 @@ module.exports = async (collection) => {
 
         if (events?.length) logEvents(events, collection.chain, contractType)
 
-        listenerStatus.blockNumber = currentBlock.number + 1
-        await listenerStatus.save()
+        await ListenerStatus.updateOne({
+          chain: collection.chain,
+          id: "collection:"+collection.address
+        }, { blockNumber: currentBlock.number + 1 }, { upsert: true })
+
+       
 
       }
     }, config.listener.interval)

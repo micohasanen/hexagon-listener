@@ -8,7 +8,8 @@ const ListenerStatusSchema = mongoose.Schema({
   blockNumber: Number,
   id: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   }
 }, { timestamps: true })
 
