@@ -1,10 +1,15 @@
 require("dotenv").config()
 const PORT = process.env.PORT || 5001
 
+const mongoose = require("mongoose")
 const express = require("express")
 const axios = require("axios")
 const app = express()
 
+mongoose.connect(
+  `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@${process.env.MONGO_URL}/${process.env.MONGO_DB_NAME}?retryWrites=true&w=majority`)
+
+  
 const config = require("./config")
 
 app.listen(PORT, () => {
