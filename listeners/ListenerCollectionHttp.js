@@ -5,7 +5,7 @@ const { addTransfer } = require("../queue/Queue")
 const config = require("../config")
 
 //Models
-const  ListenerCollection = require("../models/ListenerCollection")
+const  ListenerStatus = require("../models/ListenerStatus")
 
 function logEvents (events, chain, contractType) {
   events.forEach((data) => {
@@ -71,16 +71,18 @@ module.exports = async (collection) => {
 
     let startBlock;
 
-    const listenerCollection = await ListenerCollection.findOne({ 
-      chain :collection.chain
+    const listenerStatus = await ListenerStatus.findOne({ 
+      chain :collection.chain,
+      id: "collection:"+collection.address
     })
-    if (!listenerCollection) {
+    if (!listenerStatus) {
        startBlock = await Provider.eth.getBlockNumber()
-       listenerCollection.chain =  collection.chain
-       listenerCollection.blockNumber = startBlock
-       await listenerCollection.save()
+       listenerStatus.chain =  collection.chain
+       listenerStatus.blockNumber = startBlock
+       listenerStatus.id = "collection:"+collection.address
+       await listenerStatus.save()
     } else {
-      startBlock = listenerCollection.blockNumber
+      startBlock = listenerStatus.blockNumber
     }
 
     
@@ -95,8 +97,8 @@ module.exports = async (collection) => {
 
         if (events?.length) logEvents(events, collection.chain, contractType)
 
-        listenerCollection.blockNumber = currentBlock.number + 1
-        await listenerCollection.save()
+        listenerStatus.blockNumber = currentBlock.number + 1
+        await listenerStatus.save()
 
       }
     }, config.listener.interval)

@@ -4,7 +4,7 @@ const { addToListingQueue, addToBidQueue, addToAuctionQueue } = require("../queu
 const config = require("../config")
 
 // Models
-const  ListenerMarketplace = require("../models/ListenerMarketplace")
+const  ListenerStatus = require("../models/ListenerStatus")
 
 function logEvents(events) {
   events.forEach((data) => {
@@ -64,16 +64,18 @@ module.exports = async ({ chain, address }) => {
 
     let startBlock;
 
-    const listenerMarketplace = await ListenerMarketplace.findOne({ 
-      chain :collection.chain
+    const listenerStatus = await ListenerStatus.findOne({ 
+      chain :collection.chain,
+      id: "marketplace:"+address
     })
-    if (!listenerMarketplace) {
+    if (!listenerStatus) {
        startBlock = await Provider.eth.getBlockNumber()
-       listenerMarketplace.chain =  collection.chain
-       listenerMarketplace.blockNumber = startBlock
-       await listenerMarketplace.save()
+       listenerStatus.chain =  collection.chain
+       listenerStatus.blockNumber = startBlock
+       listenerStatus.id = "marketplace:"+address
+       await listenerStatus.save()
     } else {
-      startBlock = listenerMarketplace.blockNumber
+      startBlock = listenerStatus.blockNumber
     }
 
 
@@ -89,8 +91,8 @@ module.exports = async ({ chain, address }) => {
 
         if (events?.length) logEvents(events)
 
-        listenerMarketplace.blockNumber = currentBlock.number + 1
-        await listenerMarketplace.save()
+        listenerStatus.blockNumber = currentBlock.number + 1
+        await listenerStatus.save()
 
       }
     }, config.listener.interval)
