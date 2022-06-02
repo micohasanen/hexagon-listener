@@ -3,6 +3,9 @@ const GetProvider = require("../utils/ChainProvider")
 const { addToListingQueue, addToBidQueue, addToAuctionQueue } = require("../queue/Queue") 
 const config = require("../config")
 
+// Models
+const  ListenerStatus = require("../models/ListenerStatus")
+
 function logEvents(events) {
   events.forEach((data) => {
     console.log("Marketplace Event:", data.event)
@@ -59,7 +62,24 @@ module.exports = async ({ chain, address }) => {
     const Provider = GetProvider(chain)
     const contract = new Provider.eth.Contract(ABI_Marketplace, address)
 
-    let startBlock = await Provider.eth.getBlockNumber()
+    let startBlock;
+
+    const listenerStatus = await ListenerStatus.findOne({ 
+      chain :chain,
+      id: "marketplace:"+address
+    })
+    if (!listenerStatus) {
+       startBlock = await Provider.eth.getBlockNumber()
+       const listenerStatus = new ListenerStatus() 
+       listenerStatus.chain =  chain
+       listenerStatus.blockNumber = startBlock
+       listenerStatus.id = "marketplace:"+address
+       await listenerStatus.save()
+    } else {
+      startBlock = listenerStatus.blockNumber
+    }
+
+
     console.log(chain, 'marketplace listener setup')
 
     setInterval(async () => {
@@ -71,8 +91,13 @@ module.exports = async ({ chain, address }) => {
         })
 
         if (events?.length) logEvents(events)
+        
 
-        startBlock = currentBlock.number + 1
+        await ListenerStatus.updateOne({
+          chain: chain,
+          id: "marketplace:"+address
+        }, { blockNumber: currentBlock.number + 1 }, { upsert: true })
+
       }
     }, config.listener.interval)
   } catch (error) {

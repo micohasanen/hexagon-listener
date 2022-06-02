@@ -4,6 +4,9 @@ const GetProvider = require("../utils/ChainProvider")
 const { addTransfer } = require("../queue/Queue")
 const config = require("../config")
 
+//Models
+const  ListenerStatus = require("../models/ListenerStatus")
+
 function logEvents (events, chain, contractType) {
   events.forEach((data) => {
     if (data.event === 'Transfer') { // ERC721
@@ -65,7 +68,25 @@ module.exports = async (collection) => {
     }
 
     const contractType = collection.contractType || 'ERC721'
-    let startBlock = await Provider.eth.getBlockNumber()
+
+    let startBlock;
+
+    const listenerStatus = await ListenerStatus.findOne({ 
+      chain :collection.chain,
+      id: "collection:"+collection.address
+    })
+    if (!listenerStatus) {
+       startBlock = await Provider.eth.getBlockNumber()
+       const listenerStatus = new ListenerStatus() 
+       listenerStatus.chain =  collection.chain
+       listenerStatus.blockNumber = startBlock
+       listenerStatus.id = "collection:"+collection.address
+       await listenerStatus.save()
+    } else {
+      startBlock = listenerStatus.blockNumber
+    }
+
+    
 
     setInterval(async () => {
       const currentBlock = await Provider.eth.getBlock('latest')
@@ -77,7 +98,13 @@ module.exports = async (collection) => {
 
         if (events?.length) logEvents(events, collection.chain, contractType)
 
-        startBlock = currentBlock.number + 1
+        await ListenerStatus.updateOne({
+          chain: collection.chain,
+          id: "collection:"+collection.address
+        }, { blockNumber: currentBlock.number + 1 }, { upsert: true })
+
+       
+
       }
     }, config.listener.interval)
   } catch (error) {
