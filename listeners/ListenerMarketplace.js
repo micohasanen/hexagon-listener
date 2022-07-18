@@ -9,8 +9,7 @@ module.exports = () => {
   const contract = new Provider.eth.Contract(ABI_Marketplace, address)
 
   const listener = contract.events.allEvents({
-      fromBlock: 0,
-      toBlock: 'latest',  
+      fromBlock: 'latest'  
   })
 
   listener.on('connected', () => {
