@@ -6,6 +6,10 @@ const PolygonProvider = new Web3.providers.HttpProvider(process.env.RPC_POLYGON,
 const ETHProvider = new Web3.providers.HttpProvider(process.env.RPC_ETH, config.rpcConnection)
 const AVAXProvider = new Web3.providers.HttpProvider(process.env.RPC_AVAX, config.rpcConnection)
 const BSCProvider = new Web3.providers.HttpProvider(process.env.RPC_BSC, config.rpcConnection)
+const FTMProvider = new Web3.providers.HttpProvider(process.env.RPC_FTM, config.rpcConnection)
+const ARBProvider = new Web3.providers.HttpProvider(process.env.RPC_ARB, config.rpcConnection)
+const CROProvider = new Web3.providers.HttpProvider(process.env.RPC_CRO, config.rpcConnection)
+
 
 function getProvider (chain) {
   switch (chain) {
@@ -19,6 +23,12 @@ function getProvider (chain) {
       return AVAXProvider
     case 'bsc':
       return BSCProvider
+    case 'fantom':
+      return FTMProvider
+    case 'arbitrum':
+      return ARBProvider
+    case 'cronos':
+      return CROProvider
   }
 }
 

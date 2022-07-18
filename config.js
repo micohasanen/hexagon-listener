@@ -35,6 +35,10 @@ module.exports = {
     { chain: 'polygon', address: process.env.MARKETPLACE_POLYGON },
     { chain: 'avalanche', address: process.env.MARKETPLACE_AVAX },
     { chain: 'bsc', address: process.env.MARKETPLACE_BSC },
-    { chain: 'eth', address: process.env.MARKETPLACE_ETH }
+    { chain: 'eth', address: process.env.MARKETPLACE_ETH },
+    { chain: 'fantom', address: process.env.MARKETPLACE_FTM },
+    { chain: 'arbitrum', address: process.env.MARKETPLACE_ARB },
+    { chain: 'cronos', address: process.env.MARKETPLACE_CRO }
+    
   ]
 }
