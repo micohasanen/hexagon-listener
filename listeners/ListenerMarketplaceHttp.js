@@ -76,6 +76,6 @@ module.exports = async ({ chain, address }) => {
       }
     }, config.listener.interval)
   } catch (error) {
-    console.error(error)
+    console.error(chain+"|"+error)
   }
 }
