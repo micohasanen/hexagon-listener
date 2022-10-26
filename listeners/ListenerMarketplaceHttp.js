@@ -76,7 +76,7 @@ module.exports = async ({ chain, address }) => {
         startBlock = currentBlock.number + 1
       }
     } catch (error) {
-      console.error(collection.chain+"|"+error)
+      console.error(chain+"|"+error)
     }
     }, config.listener.interval)
   } catch (error) {
