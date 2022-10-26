@@ -81,6 +81,6 @@ module.exports = async (collection) => {
       }
     }, config.listener.interval)
   } catch (error) {
-    console.error(error)
+    console.error(collection.chain+"|"+error)
   }
 }
