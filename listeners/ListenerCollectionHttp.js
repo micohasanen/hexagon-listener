@@ -68,6 +68,9 @@ module.exports = async (collection) => {
     let startBlock = await Provider.eth.getBlockNumber()
 
     setInterval(async () => {
+      try {
+
+      
       const currentBlock = await Provider.eth.getBlock('latest')
       if (currentBlock.number > startBlock) {
         const events = await contract.getPastEvents('allEvents', {
@@ -79,6 +82,9 @@ module.exports = async (collection) => {
 
         startBlock = currentBlock.number + 1
       }
+    } catch (error) {
+      console.error(collection.chain+"|"+error)
+    }
     }, config.listener.interval)
   } catch (error) {
     console.error(collection.chain+"|"+error)

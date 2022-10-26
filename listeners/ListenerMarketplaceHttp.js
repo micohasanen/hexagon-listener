@@ -63,6 +63,7 @@ module.exports = async ({ chain, address }) => {
     console.log(chain, 'marketplace listener setup')
 
     setInterval(async () => {
+      try {
       const currentBlock = await Provider.eth.getBlock('latest')
       if (currentBlock?.number > startBlock) {
         const events = await contract.getPastEvents('allEvents', {
@@ -74,6 +75,9 @@ module.exports = async ({ chain, address }) => {
 
         startBlock = currentBlock.number + 1
       }
+    } catch (error) {
+      console.error(collection.chain+"|"+error)
+    }
     }, config.listener.interval)
   } catch (error) {
     console.error(chain+"|"+error)
