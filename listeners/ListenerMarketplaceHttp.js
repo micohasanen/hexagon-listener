@@ -54,6 +54,7 @@ function logEvents(events) {
   })
 }
 
+
 module.exports = async ({ chain, address }) => {
   try {
     const Provider = GetProvider(chain)
